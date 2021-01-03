@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEX 1.1">
+    <!-- <script src="http://d3js.org/d3.v3.min.js" charset="utf-8">
+    </script> -->
+    <script> </script>
+
+
+    <!-- <script src="viz.js"></script> -->
+    <style>
+        #borderdiv {
+        width: 200px;
+        height: 50px;
+    border: 1px solid gray;
+    }
+    </style>
+
+  </head>
+  <body>
+    <div id="borderdiv"></div>
+
+    <script>
+      var someNumbers = [17, 82, 9, 500, 40];
+      smallerNumbers = someNumbers.filter(
+        function(d) {return d <= 40});
+      d3.select("body").selectAll("div")
+        .data(smallerNumbers)
+        .enter()
+        .append("div")
+        // .html("Wow")
+        .html( d => {console.log(d); return d});
+    </script>
+  </body>
+</html>
