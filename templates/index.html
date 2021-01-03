@@ -1,35 +1,54 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta name="description" content="D3byEX 1.1">
-    <!-- <script src="http://d3js.org/d3.v3.min.js" charset="utf-8">
-    </script> -->
-    <script> </script>
-
-
-    <!-- <script src="viz.js"></script> -->
-    <style>
-        #borderdiv {
-        width: 200px;
-        height: 50px;
-    border: 1px solid gray;
-    }
-    </style>
-
-  </head>
-  <body>
-    <div id="borderdiv"></div>
-
-    <script>
-      var someNumbers = [17, 82, 9, 500, 40];
-      smallerNumbers = someNumbers.filter(
-        function(d) {return d <= 40});
-      d3.select("body").selectAll("div")
-        .data(smallerNumbers)
-        .enter()
-        .append("div")
-        // .html("Wow")
-        .html( d => {console.log(d); return d});
+    <script src="http://d3js.org/d3.v4.min.js" charset="utf-8">
     </script>
-  </body>
+
+    <style>
+    </style>
+</head>
+
+<body>
+<script>
+    var csvData;
+    d3.csv("cities.csv", data => jsonDataProcessing(data));
+    d3.json("tweets.json", data => tweetProcessing(data));
+
+    const tweetProcessing = (tweetData) => {
+        console.log("Tweet Data", tweetData)
+    }
+
+    const jsonDataProcessing = (data) => {
+        console.log(data)
+        csvData = data;
+        dataVizJson(data)
+    }
+
+    const dataVizJson = (data) => {
+        // d3.select("body")
+        //   .selectAll("div.cities")
+        //   .data(data)
+        //   .enter()
+        //   .append("div")
+        //   .attr("class", "cities")
+        //   .html(d => d.label);
+        d3.select("body").append("svg").attr("style","height: 480px; width: 600px; fill:red");
+        var maxPopulation = d3.max(data, d => parseInt(d.population));
+        console.log("maxPop", maxPopulation);
+        var yScale = d3.scaleLinear().domain([0, maxPopulation]).range([0, 460]);
+
+        d3.select("svg")
+          .selectAll("rect")
+          .data(data)
+          .enter()
+          .append("rect")
+          .attr("width", 50)
+          .attr("height", d => yScale(parseInt(d.population)))
+          .attr("x", (d,i) => i * 60 )
+          .attr("y", d => 480 - yScale(parseInt(d.population)))
+          .style("fill", "#FE9922");
+    }
+</script>
+</body>
 </html>
